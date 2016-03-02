@@ -9,7 +9,6 @@ public class _Control_Panel : MonoBehaviour {
 	Score scorePage;
 
 	public int Spinning_Speed;
-
 	public int a_assign;
 	public int b_assign;
 	public int c_assign;
@@ -29,8 +28,6 @@ public class _Control_Panel : MonoBehaviour {
 	public float g_percent;
 	public float h_percent;
 	public float i_percent; 
-
-
 	public int glinda_triggered_max;
 	public int glinda_triggered_min;
 
@@ -41,8 +38,7 @@ public class _Control_Panel : MonoBehaviour {
 
 	public int megawin;
 	public int bigwin;
-
-
+	
 	GameObject setting;
 
 	// Use this for initialization
@@ -63,9 +59,7 @@ public class _Control_Panel : MonoBehaviour {
 		PlayerPrefs.SetInt("gold", scorePage.TTL);
 		PlayerPrefs.SetInt("exp", (int)spinPage.exp_bar.value);
 		PlayerPrefs.Save();
-
 	}
-
 
 	 void Setting(){
 
@@ -76,9 +70,7 @@ public class _Control_Panel : MonoBehaviour {
 		
 		spinPage.glinda_max = glinda_triggered_max;
 		spinPage.glinda_min = glinda_triggered_min;
-
-
-
+		
 		//triggeredPage
 		triggeredPage.a_percent = a_percent;
 		triggeredPage.b_percent = b_percent;
@@ -96,8 +88,6 @@ public class _Control_Panel : MonoBehaviour {
 		// scorePage
 		scorePage.how_many_megawin = megawin;
 		scorePage.how_many_bigwin = bigwin;
-
-
 	}
 
 
@@ -107,11 +97,9 @@ public class _Control_Panel : MonoBehaviour {
 			setting.SetActive(false);
 		else
 			setting.SetActive(true);
-		
 	}
 	
 	public void goto_main_click(){
-
 		Application.LoadLevel ("scene01");
 	}
 }
