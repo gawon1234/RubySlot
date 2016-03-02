@@ -1,0 +1,46 @@
+using UnityEngine;
+using System.Collections;
+using Parse;
+using System.Threading.Tasks;
+using UnityEngine.UI;
+
+public class level_up : MonoBehaviour {
+	public int parse_max_bet, parse_earn_gold, parse_exp;
+	Score scorePage;
+	Spin spinPage;
+	Level_list level_listPage;
+	Text level_up_notice_gold;
+	Text level_up_notice_level;
+
+	// Use this for initialization
+	void Awake () {
+		scorePage = GameObject.FindObjectOfType(typeof(Score)) as Score;
+		spinPage = GameObject.FindObjectOfType(typeof(Spin)) as Spin;
+		level_listPage = GameObject.FindObjectOfType(typeof(Level_list)) as Level_list;
+
+		level_up_notice_gold = GameObject.Find("Text_Bonus").GetComponent<Text>();
+		level_up_notice_level = GameObject.Find("Text_Level").GetComponent<Text>();
+
+	}
+
+
+	public void go_to_next_level(){
+		//Debug.Log("current level : "  + scorePage.LEVEL);
+
+		scorePage.LEVEL += 1;
+		scorePage.LEVEL_txt.text = scorePage.LEVEL.ToString("00");
+		spinPage.exp_bar.maxValue = level_listPage.parse_arry_exp[scorePage.LEVEL];
+		scorePage.BET_MAX = level_listPage.parse_arry_max_bet[scorePage.LEVEL];
+		scorePage.TTL += level_listPage.parse_arry_earn_gold[scorePage.LEVEL];
+		scorePage.BET = scorePage.BET_MAX;
+		level_up_notice_gold.text = level_listPage.parse_arry_earn_gold[scorePage.LEVEL].ToString();
+		level_up_notice_level.text = scorePage.LEVEL.ToString();
+	}
+
+
+	public void close(){
+		spinPage.disable_level_up_notice();
+	}
+
+
+}
