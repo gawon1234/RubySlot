@@ -1,0 +1,167 @@
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
+public class Score : MonoBehaviour {
+	
+	public int TTL;
+	public int WIN;
+	public int BET;
+	public int BET_MAX;
+	public int how_many_megawin;
+	public int how_many_bigwin;
+	
+	Text TTL_txt;
+	Text WIN_txt;
+	Text BET_txt;
+	public Text Text_status;
+	
+	GameObject megawin;
+	GameObject fivekind;
+	GameObject bigwin;
+	GameObject coin_flood;
+
+	Sound soundPage;
+	Spin spinPage;
+	public Text LEVEL_txt;
+	public int LEVEL;
+	
+	void Awake(){
+	
+		TTL = PlayerPrefs.GetInt("gold");
+
+		WIN = 0;
+		BET = 6;
+		coin_flood = GameObject.Find("Coins");
+		spinPage = GameObject.FindObjectOfType(typeof(Spin)) as Spin;
+		soundPage = GameObject.FindObjectOfType(typeof(Sound)) as Sound;
+	}
+	
+	// Use this for initialization
+	void Start () {
+		TTL_txt = GameObject.Find("TTL_txt").GetComponent<Text>();
+		WIN_txt = GameObject.Find("WIN_txt").GetComponent<Text>();
+		BET_txt = GameObject.Find("BET_txt").GetComponent<Text>();
+		Text_status = GameObject.Find("Text_status").GetComponent<Text>();
+		LEVEL_txt = GameObject.Find("Level_Number").GetComponent<Text>();
+		LEVEL = PlayerPrefs.GetInt("level");
+
+		LEVEL_txt.text = LEVEL.ToString("00");
+		megawin = GameObject.Find("notice_megawin");
+		fivekind = GameObject.Find("notice_fivekind");
+		bigwin = GameObject.Find("notice_bigwin");
+
+
+		megawin.SetActive(false);
+		bigwin.SetActive(false);
+		fivekind.SetActive(false);
+
+		coin_flood.SetActive(false);
+		
+		TTL_txt.text = TTL.ToString();
+		BET_txt.text = BET.ToString();
+		
+		if (how_many_bigwin == 0)
+			how_many_bigwin = 10;
+		if (how_many_megawin == 0)
+			how_many_megawin = 20;
+
+		//WIN = WIN +  (int)Mathf.Pow(2, (BET / 2));
+
+	//	Debug.Log("earn gold starting from " +	Mathf.Pow(2, (BET / 2)) + " & bet is " + BET );
+	}
+	
+	// Update is called once per fram
+	void FixedUpdate () {
+		
+		TTL_txt.text = TTL.ToString();
+		WIN_txt.text = WIN.ToString();
+		BET_txt.text = BET.ToString();
+		
+		if(WIN > 0){
+			set_small_txt("Congrats! You Won " + WIN );
+			
+			if((WIN > how_many_bigwin) && (WIN < how_many_megawin)){
+				soundPage.Win_Sound();
+				coin_flood.SetActive(true);
+				//StartCoroutine( disable_coin_flood());
+				bigwin.SetActive(true);
+			}
+			else if(WIN >= how_many_megawin){
+				soundPage.Win_Sound();
+				coin_flood.SetActive(true);
+				//StartCoroutine( disable_coin_flood());
+				megawin.SetActive(true);
+			}
+		}
+		else if(TTL <= 0)
+			set_small_txt("No more Gold!");
+		
+		else
+			set_small_txt("Good Luck !" );
+
+		
+	}
+	
+	public void set_small_txt(string txt){
+		
+		Text_status.text = txt;	
+	}
+	
+	public void deduct_bet(){	
+		WIN = 0;
+		TTL = TTL - BET;	
+	}
+	
+	
+	public void BET_DOWN_click(){
+
+
+		if(BET-(BET_MAX / 5) >= 1 )
+			BET -= (BET_MAX / 5);
+	}
+	
+	
+	public void BET_UP_click(){
+		if(BET + (BET_MAX / 5) <= BET_MAX )
+			BET += (BET_MAX / 5);
+	}
+	
+	public IEnumerator plusTTL(int plus){
+		
+		int new_ttl = plus + TTL ; //+ (int)Mathf.Pow(2, (BET / 2));
+		
+		for(int p= TTL; p < new_ttl; p++){
+			TTL++;
+			yield return new WaitForSeconds(0.05f);
+		}
+		
+		
+	}
+	
+	public void enable_fivekind(){
+		
+		fivekind.SetActive(true);
+	}
+	
+	
+	public void disable_all_notice(){
+		
+		fivekind.SetActive(false);
+		megawin.SetActive(false);
+		bigwin.SetActive(false);
+		
+		
+	}
+
+	public void disable_coin_flood(){
+	//	Debug.Log("coin flood false");	
+
+			
+		WIN = 0;
+		coin_flood.SetActive(false);
+		disable_all_notice();
+	//	yield return new WaitForSeconds(1.0f);
+	}
+	
+}
