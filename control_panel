@@ -1,0 +1,117 @@
+using UnityEngine;
+using System.Collections;
+
+public class _Control_Panel : MonoBehaviour {
+
+	Spin spinPage;
+	MatchingLine matchinglinePage;
+	triggered triggeredPage;
+	Score scorePage;
+
+	public int Spinning_Speed;
+
+	public int a_assign;
+	public int b_assign;
+	public int c_assign;
+	public int d_assign;
+	public int e_assign;
+	public int f_assign;
+	public int g_assign;
+	public int h_assign;
+	public int i_assign;
+	public int ttl;
+	public float a_percent;
+	public float b_percent;
+	public float c_percent;
+	public float d_percent;
+	public float e_percent;
+	public float f_percent;
+	public float g_percent;
+	public float h_percent;
+	public float i_percent; 
+
+
+	public int glinda_triggered_max;
+	public int glinda_triggered_min;
+
+	public int[] ImgMatchGold;
+
+	public int how_many_bonus_triggered;
+	public int how_many_lucky_triggered;
+
+	public int megawin;
+	public int bigwin;
+
+
+	GameObject setting;
+
+	// Use this for initialization
+	void Start () {
+		setting = GameObject.Find("setting");
+		setting.SetActive(false);
+		//PlayerPrefs.DeleteAll();
+		spinPage = GameObject.FindObjectOfType(typeof(Spin)) as Spin;
+		triggeredPage = GameObject.FindObjectOfType(typeof(triggered)) as triggered;
+		matchinglinePage = GameObject.FindObjectOfType(typeof(MatchingLine)) as MatchingLine;
+		scorePage = GameObject.FindObjectOfType(typeof(Score)) as Score;
+
+		Setting();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		PlayerPrefs.SetInt("gold", scorePage.TTL);
+		PlayerPrefs.SetInt("exp", (int)spinPage.exp_bar.value);
+		PlayerPrefs.Save();
+
+	}
+
+
+	 void Setting(){
+
+		// spinPage
+		spinPage.speed = Spinning_Speed;
+		spinPage.how_many_bonus = how_many_bonus_triggered;
+		spinPage.how_many_lucky = how_many_lucky_triggered;
+		
+		spinPage.glinda_max = glinda_triggered_max;
+		spinPage.glinda_min = glinda_triggered_min;
+
+
+
+		//triggeredPage
+		triggeredPage.a_percent = a_percent;
+		triggeredPage.b_percent = b_percent;
+		triggeredPage.c_percent = c_percent;
+		triggeredPage.d_percent = d_percent;
+		triggeredPage.e_percent = e_percent;
+		triggeredPage.f_percent = f_percent;
+		triggeredPage.g_percent = h_percent;
+		triggeredPage.i_percent = i_percent;
+		triggeredPage.h_percent = h_percent;
+
+		// matchingPage
+		matchinglinePage.ImgMatchGold = ImgMatchGold;	
+		
+		// scorePage
+		scorePage.how_many_megawin = megawin;
+		scorePage.how_many_bigwin = bigwin;
+
+
+	}
+
+
+	public void goto_setting_click(){
+
+		if(setting.activeSelf)
+			setting.SetActive(false);
+		else
+			setting.SetActive(true);
+		
+	}
+	
+	public void goto_main_click(){
+
+		Application.LoadLevel ("scene01");
+	}
+}
